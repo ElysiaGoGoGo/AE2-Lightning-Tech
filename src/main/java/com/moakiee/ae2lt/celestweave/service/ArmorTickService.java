@@ -9,6 +9,7 @@ import net.neoforged.api.distmarker.Dist;
 import com.moakiee.ae2lt.celestweave.CelestweaveArmorState;
 
 public final class ArmorTickService {
+
     private ArmorTickService() {
     }
 
@@ -28,8 +29,8 @@ public final class ArmorTickService {
 
         if (player instanceof ServerPlayer serverPlayer) {
             ArmorEnergyService.refillFromBoundNetworkIfLow(serverPlayer, armor, registries);
-            if (!ArmorEnergyService.consumePassiveDrain(serverPlayer, armor, registries)) {
-                CelestweaveArmorState.syncSubmoduleActiveState(player, armor, installedSubmodules, false, dist);
+            boolean drainOk = ArmorEnergyService.consumePassiveDrain(serverPlayer, armor, registries);
+            if (!drainOk) {
                 CelestweaveArmorState.tickEquipped(player, armor, installedSubmodules, registries);
                 return;
             }
